@@ -1,22 +1,10 @@
 // const ctable = require("console.table");
+const inquirer = require("inquirer");
 const express = require("express");
 // Import and require mysql2
-const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const PORT = process.env.PORT || 3001;
 const app = express();
-inquirer
-.prompt ([
-  {
-
-  },
-  {
-    name: "employeeList",
-    type: "list",
-    message: "What would you like to do?",
-    choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
-},
-])
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
@@ -27,16 +15,28 @@ app.use(express.json());
 const db = mysql.createConnection(
   {
     host: "localhost",
-    // MySQL username,
     user: "root",
-    // TODO: Add MySQL password here
     password: "password",
     database: "employees_db",
   },
   console.log(`Connected to the employees_db database.`)
 );
+function employeeQuestions() {
+  inquirer
+    .prompt([
+      {
 
-// Create a movie
+      },
+      {
+        name: "employeeList",
+        type: "list",
+        message: "What would you like to do?",
+        choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
+      },
+    ])
+}
+// Create an employee
+
 app.post("/api/new-employee", ({ body }, res) => {
   const sql = `INSERT INTO employees (employee_name)
     VALUES (?)`;
@@ -54,7 +54,7 @@ app.post("/api/new-employee", ({ body }, res) => {
   });
 });
 
-// Read all movies
+// Check all employees
 app.get("/api/employees", (req, res) => {
   const sql = `SELECT id, employee_name AS title FROM employees`;
 
@@ -68,11 +68,11 @@ app.get("/api/employees", (req, res) => {
       data: [],
     });
     // console.log(ctable.getTable(rows))
-     
+
   });
 });
 
-// Delete a movie
+// Delete an employee
 app.delete("/api/employee/:id", (req, res) => {
   const sql = `DELETE FROM employees WHERE id = ?`;
   const params = [req.params.id];
@@ -108,6 +108,7 @@ app.get("/api/employee-roles", (req, res) => {
     });
   });
 });
+
 
 // BONUS: Update review name
 app.put("/api/role/:id", (req, res) => {
