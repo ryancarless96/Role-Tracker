@@ -14,7 +14,7 @@ inquirer
     name: "employeeList",
     type: "list",
     message: "What would you like to do?",
-    choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department"],
+    choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
 },
 ])
 
