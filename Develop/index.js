@@ -1,16 +1,29 @@
 // const ctable = require("console.table");
 const express = require("express");
 // Import and require mysql2
+const inquirer = require("inquirer");
 const mysql = require("mysql2");
-
 const PORT = process.env.PORT || 3001;
 const app = express();
+inquirer
+.prompt ([
+  {
+
+  },
+  {
+    name: "employeeList",
+    type: "list",
+    message: "What would you like to do?",
+    choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department"],
+},
+])
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Connect to database
+
 const db = mysql.createConnection(
   {
     host: "localhost",
