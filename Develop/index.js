@@ -1,3 +1,4 @@
+// const ctable = require("console.table");
 const express = require("express");
 // Import and require mysql2
 const mysql = require("mysql2");
@@ -51,8 +52,10 @@ app.get("/api/employees", (req, res) => {
     }
     res.json({
       message: "success",
-      data: rows,
+      data: [],
     });
+    // console.log(ctable.getTable(rows))
+     
   });
 });
 

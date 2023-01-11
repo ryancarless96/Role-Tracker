@@ -5,7 +5,7 @@ USE employees_db;
 
 CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  movie_name VARCHAR(100) NOT NULL
+  employee_name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE roles (
