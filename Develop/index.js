@@ -23,13 +23,6 @@ const db = mysql.createConnection(
   console.log(`Connected to the employees_db database.`)
 );
 
-db.connect(function (err) {
-  if (err) throw err;
-  console.log();
-  startingQuestions();
-});
-
-
 
 // Create an employee
 
@@ -136,9 +129,6 @@ app.listen(PORT, () => {
 
  inquirer
     .prompt([
-      {
-
-      },
       {
         name: "employeeList",
         type: "list",
