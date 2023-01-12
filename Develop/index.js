@@ -23,6 +23,13 @@ const db = mysql.createConnection(
   console.log(`Connected to the employees_db database.`)
 );
 
+db.connect(function (err) {
+  if (err) throw err;
+  console.log();
+  startingQuestions();
+});
+
+
 
 // Create an employee
 
@@ -127,7 +134,7 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-inquirer
+ inquirer
     .prompt([
       {
 
@@ -136,6 +143,17 @@ inquirer
         name: "employeeList",
         type: "list",
         message: "What would you like to do?",
-        choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
+        choices: [
+          "Add Employee",
+          "Update Employee Role",
+          "View All Roles",
+          "Add Role",
+          "View All Departments",
+          "Add Department",
+          "View All Employees",
+          "Quit"],
       },
     ])
+  
+
+
