@@ -1,8 +1,9 @@
 // const ctable = require("console.table");
-const inquirer = require("inquirer");
 const express = require("express");
-// Import and require mysql2
 const mysql = require("mysql2");
+
+const inquirer = require("inquirer");
+// Import and require mysql2
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -21,20 +22,8 @@ const db = mysql.createConnection(
   },
   console.log(`Connected to the employees_db database.`)
 );
-function employeeQuestions() {
-  inquirer
-    .prompt([
-      {
 
-      },
-      {
-        name: "employeeList",
-        type: "list",
-        message: "What would you like to do?",
-        choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
-      },
-    ])
-}
+
 // Create an employee
 
 app.post("/api/new-employee", ({ body }, res) => {
@@ -68,7 +57,6 @@ app.get("/api/employees", (req, res) => {
       data: [],
     });
     // console.log(ctable.getTable(rows))
-
   });
 });
 
@@ -96,7 +84,7 @@ app.delete("/api/employee/:id", (req, res) => {
 
 
 app.get("/api/employee-roles", (req, res) => {
-  const sql = `SELECT employee.employee_name AS employee, roles.role FROM roles JOIN employees ON roles.employee_id = employee.id ORDER BY employee.employee_name;`;
+  const sql = `SELECT employees.employee_name AS employee, roles.role FROM roles JOIN employees ON roles.employee_id = employee.id ORDER BY employee.employee_name;`;
   db.query(sql, (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -108,7 +96,6 @@ app.get("/api/employee-roles", (req, res) => {
     });
   });
 });
-
 
 // BONUS: Update review name
 app.put("/api/role/:id", (req, res) => {
@@ -131,7 +118,6 @@ app.put("/api/role/:id", (req, res) => {
     }
   });
 });
-
 // Default response for any other request (Not Found)
 app.use((req, res) => {
   res.status(404).end();
@@ -140,3 +126,16 @@ app.use((req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+inquirer
+    .prompt([
+      {
+
+      },
+      {
+        name: "employeeList",
+        type: "list",
+        message: "What would you like to do?",
+        choices: ["Add Employee", "Update Employee Role", "View All Roles", "Add Role", "View All Departments", "Add Department", "View All Employees", "Quit"],
+      },
+    ])
