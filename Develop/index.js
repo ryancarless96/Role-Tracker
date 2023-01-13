@@ -145,6 +145,23 @@ app.listen(PORT, () => {
           "Quit"],
       },
     ])
-  
+    .then(answer=>{
+      let choice = answer.employeeList
+      console.log(choice)
+      switch (choice){
+        case "Add Employee": 
+        console.log("My add employee function goes here");
+        addEmployee()
+        break;
+        default: 
+        console.log("Invalid option")
+        break;
+      }
+    }); 
+    
+  function addEmployee() {
+  //"code to add employees to database"
+  //add inquirer prompts and enter into the database
+  }
 
 
