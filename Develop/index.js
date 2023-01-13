@@ -136,14 +136,14 @@ app.listen(PORT, () => {
         type: "list",
         message: "What would you like to do?",
         choices: [
-          "Add Employee",
-          "Update Employee Role",
-          "View All Roles",
-          "Add Role",
-          "View All Departments",
-          "Add Department",
-          "View All Employees",
-          "Quit"],
+          "Add Employee", 
+          "Update Employee Role", 
+          "View All Roles", 
+          "Add Role", 
+          "View All Departments", 
+          "Add Department", 
+          "View All Employees", 
+          "Quit"], 
       },
     ])
     .then(answer=>{
@@ -216,11 +216,155 @@ app.listen(PORT, () => {
         },
       ])
       .then(data=>{
-        const instance = new Employee(data.jobTitle,data.roleId,data.department,data.salary)
+        const instance = viewAllRoles(data.jobTitle,data.roleId,data.department,data.salary)
         teamArray.push(instance)
         console.log(teamArray)
         addNewEmployee()
       })  
   }
+  function addRoles(){
+    inquirer
+    .prompt([
+        {  type: "input",
+        name: "jobTitle",
+        message: "Place your job title here:",
+        },
+        {
+          type: "input",
+          name: "roleId",
+          message: "Place your role id here:"
+        },
+        {
+          type: "input",
+          name: "department",
+          message: "Place your department here:"
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "Place your salary here:"
+        },
+      ])
+      .then(data=>{
+        const instance = addRoles(data.jobTitle,data.roleId,data.department,data.salary)
+        teamArray.push(instance)
+        console.log(teamArray)
+        addRoles()
+      })  
+  }
+  function viewAllDepartments(){
+    inquirer
+    .prompt([
+        {  type: "input",
+        name: "jobTitle",
+        message: "Place your job title here:",
+        },
+        {
+          type: "input",
+          name: "roleId",
+          message: "Place your role id here:"
+        },
+        {
+          type: "input",
+          name: "department",
+          message: "Place your department here:"
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "Place your salary here:"
+        },
+      ])
+      .then(data=>{
+        const instance = viewAllDepartments(data.jobTitle,data.roleId,data.department,data.salary)
+        teamArray.push(instance)
+        console.log(teamArray)
+        viewAllDepartments()
+      })  
+  }
+  function addDepartment(){
+    inquirer
+    .prompt([
+        {
+          type: "input",
+          name: "department",
+          message: "Place your department here:"
+        },
+      ])
+      .then(data=>{
+        const instance = addDepartment(data.department)
+        teamArray.push(instance)
+        console.log(teamArray)
+        addDepartment()
+      })  
+  }
+  function viewAllEmployees(){
+    inquirer
+    .prompt([
+        {  type: "input",
+        name: "employeeData",
+        message: "Place your employee data here:",
+        },
+        {
+          type: "input",
+          name: "firstName",
+          message: "Place your first name here:"
+        },
+        {
+          type: "input",
+          name: "lastName:",
+          message: "Place your last name here:"
+        },
+        {
+          type: "input",
+          name: "jobTitle",
+          message: "Place your job title here:"
+        },
+        {
+          type: "input",
+          name: "department",
+          message: "Place your department here:"
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "Place your salary here:"
+        },
+        {
+          type: "input",
+          name: "manager",
+          message: "Place your manager here:"
+        }
+      ])
+      .then(data=>{
+        const instance = viewAllEmployees(data.employeeData,data.firstName,data.lastName,data.jobTitle,data.department,data.salary, data.manager)
+        teamArray.push(instance)
+        console.log(teamArray)
+        viewAllEmployees()
+      })  
+  }
+
+  function updateEmployeeRoles(){
+    inquirer
+    .prompt([
+        {  type: "input",
+        name: "employee",
+        message: "Write down your employee here:",
+        },
+        {
+          type: "input",
+          name: "role",
+          message: "Write down the employee's role here:"
+        }
+      ])
+      .then(data=>{
+        const instance = updateEmployeeRoles(data.employee,data.role)
+        teamArray.push(instance)
+        console.log(teamArray)
+        updateEmployeeRoles()
+      })  
+  }
+
+
 
 
