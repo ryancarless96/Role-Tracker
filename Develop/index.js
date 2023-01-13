@@ -3,6 +3,7 @@ const express = require("express");
 const mysql = require("mysql2");
 
 const inquirer = require("inquirer");
+const Employee = require("../../../Module-10-Challenge/Module-10-Challenge/Develop/lib/Employee");
 // Import and require mysql2
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -159,9 +160,67 @@ app.listen(PORT, () => {
       }
     }); 
     
-  function addEmployee() {
+   function addEmployee() {
+    inquirer
+        .prompt([
+            {  type: "input",
+            name: "firstName",
+            message: "Place your first name here:",
+            },
+            {
+              type: "input",
+              name: "lastName",
+              message: "Place your last name here:"
+            },
+            {
+              type: "input",
+              name: "role",
+              message: "Place your role here:"
+            },
+            {
+              type: "input",
+              name: "manager",
+              message: "Place your manager here:"
+            },
+          ])
+          .then(data=>{
+            const instance = new Employee(data.firstName,data.lastName,data.role,data.manager)
+            teamArray.push(instance)
+            console.log(teamArray)
+            addNewEmployee()
+          })
   //"code to add employees to database"
   //add inquirer prompts and enter into the database
+  }
+  function viewAllRoles(){
+    inquirer
+    .prompt([
+        {  type: "input",
+        name: "jobTitle",
+        message: "Place your job title here:",
+        },
+        {
+          type: "input",
+          name: "roleId",
+          message: "Place your role id here:"
+        },
+        {
+          type: "input",
+          name: "department",
+          message: "Place your department here:"
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "Place your salary here:"
+        },
+      ])
+      .then(data=>{
+        const instance = new Employee(data.jobTitle,data.roleId,data.department,data.salary)
+        teamArray.push(instance)
+        console.log(teamArray)
+        addNewEmployee()
+      })  
   }
 
 
