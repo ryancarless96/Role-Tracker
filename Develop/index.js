@@ -219,7 +219,7 @@ app.listen(PORT, () => {
         const instance = viewAllRoles(data.jobTitle,data.roleId,data.department,data.salary)
         teamArray.push(instance)
         console.log(teamArray)
-        addNewEmployee()
+        viewAllRoles()
       })  
   }
   function addRoles(){
