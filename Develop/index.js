@@ -1,6 +1,9 @@
 require("console.table");
 
 const inquirer = require("inquirer");
+const mysql = require("mysql2");
+const PORT = process.env.PORT || 3001;
+
 const db = require("./config/connection")
 
 // Check all employees
@@ -37,15 +40,18 @@ inquirer
       case "View All Employees":
         viewAllEmployees()
         break;
-        case "View All Roles":
-          viewAllRoles()
-          break;
-        case "Add Role":
-          addRoles()
-          break;
-          case "View All Departments":
-            viewAllDepartments()
-            break;
+      case "View All Roles":
+        viewAllRoles()
+        break;
+      case "Add Role":
+        addRoles()
+        break;
+      case "View All Departments":
+        viewAllDepartments()
+        break;
+      case "Add Department":
+        addDepartment()
+        break;
       default:
         console.log("Invalid option")
         break;
@@ -110,10 +116,10 @@ function viewAllRoles() {
       },
     ])
     .then(data => {
-      const instance = viewAllRoles(data.jobTitle, data.roleId, data.department, data.salary)
-      teamArray.push(instance)
-      console.log(teamArray)
-      viewAllRoles()
+      db.query("SELECT * FROM role LEFT JOIN role ON employee.role_id", (err, res) => {
+        if (err) throw err
+        console.log(res)
+      })
     })
 }
 function addRoles() {
@@ -148,35 +154,10 @@ function addRoles() {
     })
 }
 function viewAllDepartments() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "jobTitle",
-        message: "Place your job title here:",
-      },
-      {
-        type: "input",
-        name: "roleId",
-        message: "Place your role id here:"
-      },
-      {
-        type: "input",
-        name: "department",
-        message: "Place your department here:"
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "Place your salary here:"
-      },
-    ])
-    .then(data => {
-      const instance = viewAllDepartments(data.jobTitle, data.roleId, data.department, data.salary)
-      teamArray.push(instance)
-      console.log(teamArray)
-      viewAllDepartments()
-    })
+  db.query("SELECT * FROM department LEFT JOIN role ON employee.role_id", (err, res) => {
+    if (err) throw err
+    console.table(res)
+  })
 }
 function addDepartment() {
   inquirer
