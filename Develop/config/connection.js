@@ -4,6 +4,7 @@ const connection = mysql.createConnection({
     host: "localhost",
   
     // Your username
+    //hair
   
     user: "root",
   

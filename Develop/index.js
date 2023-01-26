@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const PORT = process.env.PORT || 3001;
 
-const db = require("./config/connection")
+const db = require("./config/connection");
 
 // Check all employees
 
@@ -59,6 +59,14 @@ inquirer
   });
 
 function addEmployee() {
+  db.query("select * from role;", function (err,res) {
+    if(err) throw err; 
+    const role = res;
+    db.query("select * from employee;", function(err,res){
+      if(err) throw err;
+      const managers = res;
+    })
+  
   inquirer
     .prompt([
       {
@@ -72,22 +80,38 @@ function addEmployee() {
         message: "Place your last name here:"
       },
       {
-        type: "input",
+        type: "list",
         name: "role",
-        message: "Place your role here:"
+        message: "Place your role id number here:",
+        choices: role.map((role)=>({
+          name: role.title, 
+          value: role.id,
+        }))
       },
       {
-        type: "input",
+        type: "list",
         name: "manager",
-        message: "Place your manager here:"
+        message: "Place your manager here:",
+        choices: managers.map((managers)=>({
+        name:managers.first_name + managers.last_name,
+        value: managers.id
+      })),
+
       },
     ])
     .then(data => {
-      const instance = new Employee(data.firstName, data.lastName, data.role, data.manager)
-      teamArray.push(instance)
-      console.log(teamArray)
-      addNewEmployee()
+      db.query("insert into employee set ?", 
+      {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        role_id: data.role,
+        manager_id: data.manager
+      },function(err,res) {
+        if(err) throw (err);
+      });
     })
+    .then(()=> {})
+  });
   //"code to add employees to database"
   //add inquirer prompts and enter into the database
 }
