@@ -1,3 +1,5 @@
+use employees;
+
 INSERT INTO department (id,name)
 VALUES (1,"Finance"),
        (2,"Marketing"),
