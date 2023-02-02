@@ -70,16 +70,6 @@ function addEmployee() {
   inquirer
     .prompt([
       {
-        type: "input",
-        name: "firstName",
-        message: "Place your first name here:",
-      },
-      {
-        type: "input",
-        name: "lastName",
-        message: "Place your last name here:"
-      },
-      {
         type: "list",
         name: "role",
         message: "Place your role id number here:",
@@ -102,8 +92,6 @@ function addEmployee() {
     .then(data => {
       db.query("insert into employee set ?", 
       {
-        first_name: data.firstName,
-        last_name: data.lastName,
         role_id: data.role,
         manager_id: data.manager
       },function(err,res) {
