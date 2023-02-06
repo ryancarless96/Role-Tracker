@@ -1,15 +1,20 @@
 require("console.table");
 
+
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const PORT = process.env.PORT || 3001;
 
+
 const db = require("./config/connection");
+
 
 // Check all employees
 
+function startMenu(){
 inquirer
   .prompt([
+
 
     {
       name: "employeeList",
@@ -58,15 +63,13 @@ inquirer
     }
   });
 
+}
 function addEmployee() {
+  let managers; 
   db.query("select * from role;", function (err,res) {
-    if(err) throw err; 
+    if(err) throw err;
     const role = res;
-    db.query("select * from employee;", function(err,res){
-      if(err) throw err;
-      const managers = res;
-    })
-  
+ 
   inquirer
     .prompt([
       {
@@ -74,10 +77,18 @@ function addEmployee() {
         name: "role",
         message: "Place your role id number here:",
         choices: role.map((role)=>({
-          name: role.title, 
+          name: role.title,
           value: role.id,
         }))
       },
+      
+    ])
+    .then(data => {
+      db.query("select * from employee;", function(err,res){
+      if(err) throw err;
+     managers = res;
+     inquirer 
+     .prompt([
       {
         type: "list",
         name: "manager",
@@ -86,54 +97,32 @@ function addEmployee() {
         name:managers.first_name + managers.last_name,
         value: managers.id
       })),
-
       },
-    ])
-    .then(data => {
-      db.query("insert into employee set ?", 
-      {
-        role_id: data.role,
-        manager_id: data.manager
-      },function(err,res) {
-        if(err) throw (err);
-      });
+     ]) .then(()=> {
+      //   db.query("insert into employee set ?",
+    //   {
+    //     role_id: data.role,
+    //     manager_id: data.manager
+    //   },function(err,res) {
+    //     if(err) throw (err);
+    //   });
     })
-    .then(()=> {})
+    }) 
+    })
+    
   });
   //"code to add employees to database"
   //add inquirer prompts and enter into the database
 }
 function viewAllRoles() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "jobTitle",
-        message: "Place your job title here:",
-      },
-      {
-        type: "input",
-        name: "roleId",
-        message: "Place your role id here:"
-      },
-      {
-        type: "input",
-        name: "department",
-        message: "Place your department here:"
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "Place your salary here:"
-      },
-    ])
-    .then(data => {
-      db.query("SELECT * FROM role LEFT JOIN role ON employee.role_id", (err, res) => {
+    db.query("SELECT * FROM role LEFT JOIN department ON role.department_id = department.id", (err, res) => {
         if (err) throw err
-        console.log(res)
+        console.table(res)
+        startMenu()
       })
-    })
+  
 }
+
 function addRoles() {
   inquirer
     .prompt([
@@ -166,7 +155,11 @@ function addRoles() {
     })
 }
 function viewAllDepartments() {
-  db.query("SELECT * FROM department LEFT JOIN role ON employee.role_id", (err, res) => {
+  // db.query("SELECT * FROM department LEFT JOIN role ON employee.role_id", (err, res) => {
+  //   if (err) throw err
+  //   console.table(res)
+  // })
+  db.query('SELECT * FROM department', (err, res) => {
     if (err) throw err
     console.table(res)
   })
@@ -193,7 +186,9 @@ function viewAllEmployees() {
     console.table(res)
   })
 
+
 }
+
 
 function updateEmployeeRoles() {
   inquirer
@@ -216,6 +211,13 @@ function updateEmployeeRoles() {
       updateEmployeeRoles()
     })
 }
+
+
+
+
+startMenu()
+
+
 
 
 
