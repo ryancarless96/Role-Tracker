@@ -194,9 +194,10 @@ function updateEmployeeRoles() {
   inquirer
     .prompt([
       {
-        type: "input",
-        name: "employee",
-        message: "Write down your employee here:",
+        type: "list",
+        name: "employeeId",
+        message: "Which employee's role do you want to update?",
+        choices: employeeChoices
       },
       {
         type: "input",
@@ -212,12 +213,7 @@ function updateEmployeeRoles() {
     })
 }
 
-
-
-
 startMenu()
-
-
 
 
 
