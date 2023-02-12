@@ -191,6 +191,14 @@ function viewAllEmployees() {
 
 
 function updateEmployeeRoles() {
+  db.findEmployeeRoles()
+  .then(([rows])=> {
+    let employees = rows;
+    const employeeChoices = employees.map(({id, first_name, last_name})=> ({
+      name: `${first_name} ${last_name}`,
+      value: id
+    }));
+  })
   inquirer
     .prompt([
       {
@@ -198,18 +206,33 @@ function updateEmployeeRoles() {
         name: "employeeId",
         message: "Which employee's role do you want to update?",
         choices: employeeChoices
-      },
-      {
-        type: "input",
-        name: "role",
-        message: "Write down the employee's role here:"
       }
+
     ])
-    .then(data => {
-      const instance = updateEmployeeRoles(data.employee, data.role)
-      teamArray.push(instance)
-      console.log(teamArray)
-      updateEmployeeRoles()
+    .then(res => {
+      let employeeId = res.employeeId
+      db.findEmployeeRoles(employeeId)
+      .then(([rows])=> {
+        let managers = rows;
+        const managerChoices = managers.map(({id, first_name, last_name})=> ({
+          name: `${first_name} ${last_name}`,
+          value: id
+        }));
+
+        inquirer 
+        prompt([
+          {
+            type: "list",
+            name: "managerId",
+            message: "Which employee do want to set as manager for the selected employee?",
+            choices: managerChoices
+          }
+        ])
+        .then(res => db.findEmployeeRoles(employeeId, res.managerId))
+        .then(()=> console.log("Updated employee manager"))
+        .then(()=> loadMainPrompts())
+      })
+      
     })
 }
 
