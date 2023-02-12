@@ -199,6 +199,7 @@ function updateEmployeeRoles() {
       value: id
     }));
   })
+  
   inquirer
     .prompt([
       {
@@ -232,11 +233,20 @@ function updateEmployeeRoles() {
         .then(()=> console.log("Updated employee manager"))
         .then(()=> loadMainPrompts())
       })
+      function findEmployeeRoles() {
+        return something.something.promise().query(
+          "SELECT some stuff from some stuff and JOIN some stuff"
+        );
+      }
+      
       
     })
+    
 }
 
 startMenu()
+
+
 
 
 
