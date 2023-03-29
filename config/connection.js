@@ -1,5 +1,4 @@
 const mysql = require("mysql2");
-
 const connection = mysql.createConnection({
     host: "localhost",
     // Your username
@@ -11,7 +10,6 @@ const connection = mysql.createConnection({
   });
   connection.connect(function (err) {
     if (err) throw err;
-
   });
   
   
